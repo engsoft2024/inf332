@@ -305,6 +305,19 @@ paths:
           type: integer
           description: Busca os afiliados a partir dessa posição. Se não informado, assume o valor 0
           required: false
+        - in: body
+          name: affiliate
+          required: false
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Permite filtrar pelo nome do afiliado
+                example: "Afiliado XYZ"
+              comission_rate:
+                type: number
+                description: Permite filtrar pela taxa de comissão do afiliado
       security:
         - client_id: []
         - access_token: []
