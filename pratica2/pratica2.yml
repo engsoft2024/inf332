@@ -10,7 +10,7 @@ info:
   description: API da plataforma Compra Fácil.<br> Disponibiliza acesso aos produtos cadastrados na plataforma, bem como permite o cadastramento de afiliados.<br><br>Grupo 6<br>Diego de Aquino Moreno<br>Thiago de Moura Miranda<br>Victor Leal de Almeida<br>Victoria da Silva Braga
   version: '1.0'
 host: localhost
-basePath: /api/v1
+basePath: /api/v2
 tags:
   - name: produtos
   - name: afiliados
@@ -69,215 +69,32 @@ paths:
           type: integer
           description: Busca os produtos a partir dessa posição. Se não informado, assume o valor 0
           required: false
-      security:
-        - client_id: []
-        - access_token: []
-      responses:
-        '200':
-          description: Sucesso.
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/produto'
-        '401':
-          description: Não autorizado.
-        '403':
-          description: Proibido.
-        '500':
-          description: Erro Interno.
-  /produtos/{nome}:
-    get:
-      tags:
-        - produtos
-      summary: Lista os produtos cadastrados na plataforma com determinado nome
-      description: Lista os produtos cadastrados na plataforma que possuam nome semelhante ao que está sendo informado na busca
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: path
+        - in: query
           name: nome
           type: string
-          required: true
           description: Nome do produto que está sendo buscado
-        - in: query
-          name: sort_by
-          type: string
-          description: Ordena a lista de produtos conforme critério informado
-          required: false
-          enum:
-            - price_asc
-            - price_desc
-            - top_sellers
-            - recent
-        - in: query
-          name: limit
-          type: integer
-          description: Limite de resultados a serem retornados. Se não informado, serão retornados 100 produtos.
           required: false
         - in: query
-          name: offset
-          type: integer
-          description: Busca os produtos a partir dessa posição. Se não informado, assume o valor 0
-          required: false
-      security:
-        - client_id: []
-        - access_token: []
-      responses:
-        '200':
-          description: Sucesso.
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/produto'
-        '401':
-          description: Não autorizado.
-        '403':
-          description: Proibido.
-        '500':
-          description: Erro Interno.
-  /produtos/categoria/{categoria}:
-    get:
-      tags:
-        - produtos
-      summary: Lista os produtos cadastrados na plataforma de determinada categoria
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: path
           name: categoria
-          type: string
-          required: true
-          description: Categoria de produtos
-        - in: query
-          name: sort_by
-          type: string
-          description: Ordena a lista de produtos conforme critério informado
-          required: false
-          enum:
-            - price_asc
-            - price_desc
-            - top_sellers
-            - recent
-        - in: query
-          name: limit
-          type: integer
-          description: Limite de resultados a serem retornados. Se não informado, serão retornados 100 produtos.
+          type: array
+          items:
+            type: string
+          description: Nome do produto que está sendo buscado
           required: false
         - in: query
-          name: offset
-          type: integer
-          description: Busca os produtos a partir dessa posição. Se não informado, assume o valor 0
-          required: false
-      security:
-        - client_id: []
-        - access_token: []
-      responses:
-        '200':
-          description: Sucesso.
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/produto'
-        '401':
-          description: Não autorizado.
-        '403':
-          description: Proibido.
-        '500':
-          description: Erro Interno.
-  /produtos/filtrar_por_valor:
-    get:
-      tags:
-        - produtos
-      summary: Lista os produtos cadastrados entre determinada faixa de valor
-      description: Lista os produtos cadastrados na plataforma cujos valores estejam entre os valores mínimo e máximo informados.
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: values
-          required: true
-          schema:
-            type: object
-            properties:
-              min_value:
-                type: number
-                example: 2.5
-                description: Valor mínimo da busca
-              max_value:
-                type: number
-                example: 200
-                description: Valor máximo da busca
-        - in: query
-          name: sort_by
-          type: string
-          description: Ordena a lista de produtos conforme critério informado
-          required: false
-          enum:
-            - price_asc
-            - price_desc
-            - top_sellers
-            - recent
-        - in: query
-          name: limit
-          type: integer
-          description: Limite de resultados a serem retornados. Se não informado, serão retornados 100 produtos.
+          name: desconto_ativo
+          type: boolean
+          description: Retorna produtos com desconto ativo ou não
           required: false
         - in: query
-          name: offset
-          type: integer
-          description: Busca os produtos a partir dessa posição. Se não informado, assume o valor 0
-          required: false
-      security:
-        - client_id: []
-        - access_token: []
-      responses:
-        '200':
-          description: Sucesso.
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/produto'
-        '401':
-          description: Não autorizado.
-        '403':
-          description: Proibido.
-        '500':
-          description: Erro Interno.
-  /produtos/desconto_ativo:
-    get:
-      tags:
-        - produtos
-      summary: Lista os produtos cadastrados que estão com desconto ativado.
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: sort_by
-          type: string
-          description: Ordena a lista de produtos conforme critério informado
-          required: false
-          enum:
-            - price_asc
-            - price_desc
-            - top_sellers
-            - recent
-        - in: query
-          name: limit
-          type: integer
-          description: Limite de resultados a serem retornados. Se não informado, serão retornados 100 produtos.
+          name: valor_minimo
+          type: number
+          description: Retorna produtos a partir do valor informado
           required: false
         - in: query
-          name: offset
-          type: integer
-          description: Busca os produtos a partir dessa posição. Se não informado, assume o valor 0
+          name: valor_maximo
+          type: number
+          description: Retorna produtos até o valor informado
           required: false
       security:
         - client_id: []
