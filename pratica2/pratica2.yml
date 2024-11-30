@@ -7,7 +7,7 @@
 swagger: '2.0'
 info:
   title: Compra Fácil API
-  description: API da plataforma Compra Fácil.<br> Disponibiliza acesso aos produtos cadastrados na plataforma, bem como permite o cadastramento de afiliados.
+  description: API da plataforma Compra Fácil.<br> Disponibiliza acesso aos produtos cadastrados na plataforma, bem como permite o cadastramento de afiliados.<br><br>Grupo 6<br>Diego de Aquino Moreno<br>Thiago de Moura Miranda<br>Victor Leal de Almeida<br>Victoria da Silva Braga
   version: '1.0'
 host: localhost
 basePath: /api/v1
