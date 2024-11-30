@@ -1,0 +1,488 @@
+swagger: '2.0'
+info:
+  title: Compra Fácil API
+  description: API da plataforma Compra Fácil.<br> Disponibiliza acesso aos produtos cadastrados na plataforma, bem como permite o cadastramento de afiliados.
+  version: '1.0'
+host: localhost
+basePath: /api/v1
+tags:
+  - name: produtos
+  - name: afiliados
+security:
+  - client_id: []
+  - access_token: []
+  - affiliate_id: []
+securityDefinitions:
+  client_id:
+    type: apiKey
+    in: header
+    name: client_id
+  access_token:
+    type: apiKey
+    in: header
+    name: access_token
+  affiliate_id:
+    type: apiKey
+    in: header
+    name: affiliate_id
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /produtos:
+    get:
+      tags:
+        - produtos
+      summary: Lista de produtos cadastrados na plataforma
+      description: Lista a coleção de produtos cadastrados na plataforma, com opção de ordenação
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: sort_by
+          type: string
+          description: Ordena a lista de produtos conforme critério informado
+          required: false
+          enum:
+            - price_asc
+            - price_desc
+            - top_sellers
+            - recent
+        - in: query
+          name: limit
+          type: integer
+          description: Limite de resultados a serem retornados. Se não informado, serão retornados 100 produtos.
+          required: false
+        - in: query
+          name: offset
+          type: integer
+          description: Busca os produtos a partir dessa posição. Se não informado, assume o valor 0
+          required: false
+      security:
+        - client_id: []
+        - access_token: []
+      responses:
+        '200':
+          description: Sucesso.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/produto'
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Proibido.
+        '500':
+          description: Erro Interno.
+  /produtos/{nome}:
+    get:
+      tags:
+        - produtos
+      summary: Lista os produtos cadastrados na plataforma com determinado nome
+      description: Lista os produtos cadastrados na plataforma que possuam nome semelhante ao que está sendo informado na busca
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: nome
+          type: string
+          required: true
+          description: Nome do produto que está sendo buscado
+        - in: query
+          name: sort_by
+          type: string
+          description: Ordena a lista de produtos conforme critério informado
+          required: false
+          enum:
+            - price_asc
+            - price_desc
+            - top_sellers
+            - recent
+        - in: query
+          name: limit
+          type: integer
+          description: Limite de resultados a serem retornados. Se não informado, serão retornados 100 produtos.
+          required: false
+        - in: query
+          name: offset
+          type: integer
+          description: Busca os produtos a partir dessa posição. Se não informado, assume o valor 0
+          required: false
+      security:
+        - client_id: []
+        - access_token: []
+      responses:
+        '200':
+          description: Sucesso.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/produto'
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Proibido.
+        '500':
+          description: Erro Interno.
+  /produtos/categoria/{categoria}:
+    get:
+      tags:
+        - produtos
+      summary: Lista os produtos cadastrados na plataforma de determinada categoria
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: categoria
+          type: string
+          required: true
+          description: Categoria de produtos
+        - in: query
+          name: sort_by
+          type: string
+          description: Ordena a lista de produtos conforme critério informado
+          required: false
+          enum:
+            - price_asc
+            - price_desc
+            - top_sellers
+            - recent
+        - in: query
+          name: limit
+          type: integer
+          description: Limite de resultados a serem retornados. Se não informado, serão retornados 100 produtos.
+          required: false
+        - in: query
+          name: offset
+          type: integer
+          description: Busca os produtos a partir dessa posição. Se não informado, assume o valor 0
+          required: false
+      security:
+        - client_id: []
+        - access_token: []
+      responses:
+        '200':
+          description: Sucesso.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/produto'
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Proibido.
+        '500':
+          description: Erro Interno.
+  /produtos/filtrar_por_valor:
+    get:
+      tags:
+        - produtos
+      summary: Lista os produtos cadastrados entre determinada faixa de valor
+      description: Lista os produtos cadastrados na plataforma cujos valores estejam entre os valores mínimo e máximo informados.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: values
+          required: true
+          schema:
+            type: object
+            properties:
+              min_value:
+                type: number
+                example: 2.5
+                description: Valor mínimo da busca
+              max_value:
+                type: number
+                example: 200
+                description: Valor máximo da busca
+        - in: query
+          name: sort_by
+          type: string
+          description: Ordena a lista de produtos conforme critério informado
+          required: false
+          enum:
+            - price_asc
+            - price_desc
+            - top_sellers
+            - recent
+        - in: query
+          name: limit
+          type: integer
+          description: Limite de resultados a serem retornados. Se não informado, serão retornados 100 produtos.
+          required: false
+        - in: query
+          name: offset
+          type: integer
+          description: Busca os produtos a partir dessa posição. Se não informado, assume o valor 0
+          required: false
+      security:
+        - client_id: []
+        - access_token: []
+      responses:
+        '200':
+          description: Sucesso.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/produto'
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Proibido.
+        '500':
+          description: Erro Interno.
+  /produtos/desconto_ativo:
+    get:
+      tags:
+        - produtos
+      summary: Lista os produtos cadastrados que estão com desconto ativado.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: sort_by
+          type: string
+          description: Ordena a lista de produtos conforme critério informado
+          required: false
+          enum:
+            - price_asc
+            - price_desc
+            - top_sellers
+            - recent
+        - in: query
+          name: limit
+          type: integer
+          description: Limite de resultados a serem retornados. Se não informado, serão retornados 100 produtos.
+          required: false
+        - in: query
+          name: offset
+          type: integer
+          description: Busca os produtos a partir dessa posição. Se não informado, assume o valor 0
+          required: false
+      security:
+        - client_id: []
+        - access_token: []
+      responses:
+        '200':
+          description: Sucesso.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/produto'
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Proibido.
+        '500':
+          description: Erro Interno.
+  /afiliados:
+    get:
+      tags:
+        - afiliados
+      summary: Retorna a lista de afiliados cadastrados
+      parameters:
+        - in: query
+          name: limit
+          type: integer
+          description: Limite de resultados a serem retornados. Se não informado, serão retornados 100 afiliados.
+          required: false
+        - in: query
+          name: offset
+          type: integer
+          description: Busca os afiliados a partir dessa posição. Se não informado, assume o valor 0
+          required: false
+      security:
+        - client_id: []
+        - access_token: []
+      responses:
+        '200':
+          description: Sucesso.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/afiliado'
+        '400':
+          description: Erro de requisição.
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Proibido.
+        '500':
+          description: Erro Interno.
+    post:
+      tags:
+        - afiliados
+      summary: Cria um novo afiliado
+      parameters:
+        - in: body
+          name: affiliate
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Nome do afiliado
+                example: "Afiliado XYZ"
+              email:
+                type: string
+                description: Email do afiliado
+                example: "afiliado@xyz.com"
+              website:
+                type: string
+                description: Website do afiliado
+                example: "https://www.xyz.com"
+              commission_rate:
+                type: number
+                description: Taxa de comissão do afiliado
+                example: 10.0
+      security:
+        - client_id: []
+        - access_token: []
+      responses:
+        '201':
+          description: Afiliado criado com sucesso.
+          schema:
+            $ref: '#/definitions/afiliado'
+        '400':
+          description: Erro de requisição.
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Proibido.
+        '500':
+          description: Erro Interno.
+  /afiliados/{id}:
+    put:
+      tags:
+        - afiliados
+      summary: Atualiza os dados de um afiliado existente
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Identificador do afiliado
+        - in: body
+          name: affiliate
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Nome do afiliado
+                example: "Afiliado XYZ"
+              email:
+                type: string
+                description: Email do afiliado
+                example: "afiliado@xyz.com"
+              website:
+                type: string
+                description: Website do afiliado
+                example: "https://www.xyz.com"
+              commission_rate:
+                type: number
+                description: Taxa de comissão do afiliado
+                example: 10.0
+      security:
+        - client_id: []
+        - access_token: []
+      responses:
+        '201':
+          description: Afiliado criado com sucesso.
+          schema:
+            $ref: '#/definitions/afiliado'
+        '400':
+          description: Erro de requisição.
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Proibido.
+        '404':
+          description: Afiliado não encontrado.
+        '500':
+          description: Erro Interno.
+  /afiliados/{id}/delete:
+    delete:
+      tags:
+        - afiliados
+      summary: Exclui um afiliado existente
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Identificador do afiliado
+      security:
+        - client_id: []
+        - access_token: []
+      responses:
+        '201':
+          description: Afiliado excluído com sucesso.
+        '400':
+          description: Erro de requisição.
+        '401':
+          description: Não autorizado.
+        '403':
+          description: Proibido.
+        '404':
+          description: Afiliado não encontrado.
+        '500':
+          description: Erro Interno.
+
+definitions:
+  produto:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Identificador do produto.
+        example: 345
+      descricao:
+        type: string
+        description: Nome do produto.
+        example: "Chocolate Toblerone"
+      valor:
+        type: number
+        description: Valor do produto
+        example: 30.90
+      categoria:
+        type: string
+        description: Categoria do produto
+        example: "chocolate"
+      desconto:
+        type: boolean
+        description: Informa se o produto está com desconto ativo
+  afiliado:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Identificador do afiliado
+      name:
+        type: string
+        description: Nome do afiliado
+        example: "Afiliado XYZ"
+      website:
+        type: string
+        description: Website do afiliado
+        example: "https://www.xyz.com"
+      commission_rate:
+        type: number
+        description: Taxa de comissão do afiliado
+        example: 10.0
