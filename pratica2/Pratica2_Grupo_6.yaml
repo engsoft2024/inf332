@@ -79,7 +79,7 @@ paths:
           type: array
           items:
             type: string
-          description: Nome do produto que está sendo buscado
+          description: Filtra os produtos pelas categorias informadas
           required: false
         - in: query
           name: desconto_ativo
